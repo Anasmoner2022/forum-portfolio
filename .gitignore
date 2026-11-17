@@ -1,0 +1,9 @@
+/data/
+/forum-portfolio
+/forum
+*.db
+*.db-shm
+*.db-wal
+*.log
+.env
+/qa-artifacts/
