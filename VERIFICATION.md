@@ -28,3 +28,16 @@ Date: 2026-11-17. Environment: Linux, Go 1.25.5, CGO SQLite.
 - Generated concept boards contain illustrative content. The working app starts empty; they are not evidence of seeded users or live adoption.
 
 All test accounts/content were synthetic. No database, credentials, session tokens or private teaching files are included in this repository.
+
+## Optional ephemeral Vercel branch verification
+
+- Added opt-in demo seeding, visible temporary-data notice, and Container runtime configuration.
+- `go test -race -cover ./...`: passed, 76.5% statement coverage, 27.843 seconds.
+- `go vet ./...`: passed.
+- `go build -buildvcs=false`: passed. VCS stamping was disabled for the local smoke binary because this sandbox could not resolve linked-worktree Git metadata from the compiler process; application compilation succeeded.
+- Real process smoke: started against a fresh /tmp directory, guest homepage contained the demo warning and seeded discussion, health endpoint returned ok, and SQLite file mode was 0600.
+- Tests verify idempotent seed, disabled sample account login, browse/filter/thread/auth views, new visitor writes, independent fresh-instance data, and absence of demo content/notice without -demo.
+- Vercel deployment and Docker runtime remain untested. No project, account, billing or deployment was created.
+
+### Preview container CI coverage
+The workflow now builds both Dockerfile and Dockerfile.vercel. The preview image smoke script starts the actual image with a read-only root, an isolated tmpfs /tmp, no capabilities and no persistent volume. It checks health, synthetic feed/thread/CSS, Secure CSRF cookie, non-root UID and database mode 0600, then recreates the container and checks fresh seeded content. Shell syntax and workflow YAML were validated locally. Docker execution still requires the CI runner; it was not executed locally because Docker is unavailable.

@@ -27,6 +27,7 @@ const sessionTTL = 8 * time.Hour
 const maxBody = 64 << 10
 
 type View struct {
+	Demo                                              bool
 	Page, Title, CSRF, Error, Filter, Category, Query string
 	Status                                            int
 	User                                              *User
@@ -46,6 +47,7 @@ type attempt struct {
 	until time.Time
 }
 type App struct {
+	demo      bool
 	db        *sql.DB
 	templates *template.Template
 	secure    bool
@@ -124,6 +126,7 @@ func (a *App) form(w http.ResponseWriter, r *http.Request) bool {
 	return true
 }
 func (a *App) render(w http.ResponseWriter, r *http.Request, status int, v View) {
+	v.Demo = a.demo
 	var err error
 	if v.User == nil {
 		v.User, err = a.user(r)

@@ -16,3 +16,7 @@ jobs:
       - run: go test -race -cover ./...
       - run: go build ./...
       - run: docker build -t forum-test .
+      - name: Build ephemeral Vercel image
+        run: docker build -f Dockerfile.vercel -t forum-vercel-test .
+      - name: Smoke ephemeral Vercel image
+        run: bash scripts/smoke-vercel-container.sh forum-vercel-test

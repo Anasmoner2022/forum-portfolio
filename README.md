@@ -1,5 +1,7 @@
 # Forum
 
+This branch also contains an optional **ephemeral Vercel demo**. See [VERCEL-DEMO.md](VERCEL-DEMO.md) for setup and important data/session-loss limitations. The normal local app below remains unchanged.
+
 A server-rendered community forum built with **Go, SQLite and plain HTML/CSS**. The design pairs editorial typography with a responsive teal/navy interface. It is a portfolio and learning project, not a production-hosted service.
 
 ## Features

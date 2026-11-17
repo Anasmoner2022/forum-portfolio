@@ -12,3 +12,5 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}a,button{transition:none}}
 
 @media(max-width:520px){.join-label-full{display:none}.join-label-small{display:inline}}
+
+.demo-notice{background:#e7f4ef;border:1px solid #b4d4c5;color:#143d31;font-size:.9rem;line-height:1.65;margin-bottom:1.5rem;padding:1rem 1.2rem;border-radius:12px}.demo-notice strong{display:block}.demo-notice a{text-decoration:underline}

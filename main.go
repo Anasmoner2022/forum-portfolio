@@ -49,6 +49,7 @@ func templateFuncs() template.FuncMap {
 func main() {
 	addr := flag.String("addr", "127.0.0.1:8080", "listen address (use 0.0.0.0:8080 in a container)")
 	dbPath := flag.String("db", "data/forum.db", "SQLite database file")
+	demo := flag.Bool("demo", false, "seed synthetic demo content and display ephemeral-data warning")
 	secure := flag.Bool("secure-cookie", false, "require HTTPS for session cookies")
 	flag.Parse()
 	if err := os.MkdirAll(filepath.Dir(*dbPath), 0700); err != nil {
@@ -59,6 +60,11 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+	if *demo {
+		if err := seedDemo(db); err != nil {
+			log.Fatal(err)
+		}
+	}
 	if err := os.Chmod(*dbPath, 0600); err != nil {
 		log.Fatal(err)
 	}
@@ -66,7 +72,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	app := &App{db: db, templates: tmpl, secure: *secure, now: time.Now, attempts: make(map[string]attempt)}
+	app := &App{demo: *demo, db: db, templates: tmpl, secure: *secure, now: time.Now, attempts: make(map[string]attempt)}
 	server := &http.Server{Addr: *addr, Handler: app.routes(), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second, MaxHeaderBytes: 16 << 10}
 	stopped := make(chan os.Signal, 1)
 	signal.Notify(stopped, syscall.SIGINT, syscall.SIGTERM)
